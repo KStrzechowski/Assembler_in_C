@@ -31,6 +31,8 @@ main(int argc, char* argv[])
 	check_instructions(char_array_A, char_array_B, char_array_C, char_array_D, line, key);
 	print_char_arrays(char_array_A, char_array_B, char_array_C, char_array_D, line);
 
+
+	//dummy commit 
 	for (int i = 0; i < line; i++) free(char_array_A[i], char_array_B[i], char_array_C[i], char_array_D[i]);
 	free(char_array_A, char_array_B, char_array_C, char_array_D);
 
