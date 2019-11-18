@@ -102,7 +102,7 @@ void read_file_data_to_arrays(char **char_array_A, char **char_array_B, char **c
 
 void print_char_arrays(char **char_array_A, char **char_array_B, char **char_array_C, char **char_array_D, int line)
 {
-	printf("\n ");
+	printf("\n\t\tTABLICA INSTRUKCJI\n\n ");
 	for (int i = 0; i < line; i++)
 	{
 		printf("\t%s\t ", char_array_A[i]);

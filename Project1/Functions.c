@@ -11,14 +11,16 @@ void push(int **arr, int *plus_size, int *size)
 
 int DS(char **char_array_A, char **char_array_C, char **char_array_D, int *arr, int line, int *arr_size, int *plus_size)
 { 
+	int i = 0;
 	*plus_size = 0;
-	itoa(*arr_size, char_array_D[line], 10);
+	_itoa(*arr_size, char_array_D[line], 10);
 	if(char_array_C[line][0] == 'I')	*plus_size = 1;
 	else
 	{
 			*plus_size = atoi(char_array_C[line]);
 	}
 	push(&arr, plus_size, arr_size);
+	for (i = *arr_size - *plus_size; i < *arr_size; i++) arr[i] = 0;
 	return arr;
 }
 
@@ -26,16 +28,16 @@ int DC(char **char_array_A, char **char_array_C, char **char_array_D, int* arr, 
 {
 	printf("DC: ");
 	int char_index_C = 0;
-	int value_place;
+	int value_place, i;
 	*plus_size = 0;
-	itoa(*arr_size, char_array_D[line], 10);
+	_itoa(*arr_size, char_array_D[line], 10);
 	if (char_array_C[line][0] == 'I')	*plus_size = 1;
 	else
 	{
 		*plus_size = atoi(char_array_C[line]);
 	}
 	push(&arr, plus_size, arr_size);
-	for (int i = *arr_size - *plus_size; i < *arr_size; i++) arr[i] = 0;
+	for (i = *arr_size - *plus_size; i < *arr_size; i++) arr[i] = 0;
 	
 	while (char_array_C[line][char_index_C] != '\n ') // WPISUJEMY PODAN¥ WARTOŒÆ DO ZADEKLAROWANEJ CZÊŒCI TABLICY
 	{
@@ -90,7 +92,7 @@ void L(int *reg, char  **char_array_A, char  **char_array_C, char  **char_array_
 	if (i == line) pointer = (int*)((char*)pointer + atoi(char_array_D[line]));
 	else pointer = (int*)((char*)pointer + atoi(char_array_D[i]) * 4);
 	reg[atoi(char_array_C[line])] = *pointer;
-	printf("L: REGISTER[%s] = %d \n ", char_array_C[line], reg[atoi(char_array_C[line])]);
+	printf("L : REGISTER[%s] = %d \n ", char_array_C[line], reg[atoi(char_array_C[line])]);
 }
 
 void LA(int *reg, char  **char_array_A, char  **char_array_C, char  **char_array_D, int line, int* arr, int *pointer)
@@ -105,10 +107,7 @@ void LA(int *reg, char  **char_array_A, char  **char_array_C, char  **char_array
 		if (char_array_D[line][char_index_D] == '(')
 		{
 			value_place = char_index_D;
-			//printf("\n %s\n ", char_array_D[line]);
 			char_index_D++;
-			//printf("array[%d] = %d \n ", *plus_size, arr[*arr_size - 1])
-
 			while (char_array_D[line][char_index_D] != ')')
 			{
 				p *= 10;
@@ -117,7 +116,6 @@ void LA(int *reg, char  **char_array_A, char  **char_array_C, char  **char_array
 			}
 			char_array_D[line][value_place] = '\0';
 			pointer = reg[p];
-			//printf("aaa");
 			break;
 		}
 		char_index_D++;
@@ -161,20 +159,20 @@ void C(int *reg, char  **char_array_A, char  **char_array_C, char  **char_array_
 {
 	int i = 0;
 	while (strcmp(char_array_D[line], char_array_A[i]) != 0) i++;
-	reg[15] = reg[atoi(char_array_C[line])] - arr[atoi(char_array_D[i])];
-	printf("C: %d\n ", reg[15]);
+	reg[16] = reg[atoi(char_array_C[line])] - arr[atoi(char_array_D[i])];
+	printf("C : %d\n ", reg[15]);
 }
 
 void CR(int *reg, char  **char_array_C, char  **char_array_D, int line, int *arr)
 {
-	reg[15] = reg[atoi(char_array_C[line])] - reg[atoi(char_array_D[line])];
-	printf("CR: %d\n ", reg[15]);
+	reg[16] = reg[atoi(char_array_C[line])] - reg[atoi(char_array_D[line])];
+	printf("CR: %d\n ", reg[16]);
 }
 
 int J(int *reg, char  **char_array_A, char  **char_array_C, int line)
 {
 	int instruction_index = 0;
-	printf("J: %s\n ", char_array_C[line]);
+	printf("J : %s\n ", char_array_C[line]);
 	while (strcmp(char_array_C[line], char_array_A[instruction_index]) != 0) instruction_index++;
 	return instruction_index - 1;
 }
@@ -182,7 +180,7 @@ int J(int *reg, char  **char_array_A, char  **char_array_C, int line)
 int JP(int* reg, char  **char_array_A, char  **char_array_C, int line)
 {
 	int instruction_index = 0;
-	if (reg[15] > 0)
+	if (reg[16] > 0)
 	{
 		printf("JP: %s\n ", char_array_C[line]);
 		while (strcmp(char_array_C[line], char_array_A[instruction_index]) != 0) instruction_index++;
@@ -193,7 +191,7 @@ int JP(int* reg, char  **char_array_A, char  **char_array_C, int line)
 int JZ(int* reg, char  **char_array_A, char  **char_array_C, int line)
 {
 	int instruction_index = 0;
-	if (reg[15] == 0)
+	if (reg[16] == 0)
 	{
 		printf("JZ: %s\n ", char_array_C[line]);
 		while (strcmp(char_array_C[line], char_array_A[instruction_index]) != 0) instruction_index++;
@@ -205,7 +203,7 @@ int JZ(int* reg, char  **char_array_A, char  **char_array_C, int line)
 int JN(int* reg, char  **char_array_A, char  **char_array_C, int line)
 {
 	int instruction_index = 0;
-	if (reg[15] < 0)
+	if (reg[16] < 0)
 	{
 		printf("JN: %s\n ", char_array_C[line]);
 		while (strcmp(char_array_C[line], char_array_A[instruction_index]) != 0) instruction_index++;

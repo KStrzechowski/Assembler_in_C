@@ -4,14 +4,18 @@
 void check_instructions(char **char_array_A, char **char_array_B, char **char_array_C, char **char_array_D, int line, char *key[])
 {
 	char ch = 'a';
-	int arr_size = 0, plus_size;
+	int arr_size = 0, plus_size, i, j;
 	int reg[17];
 	int *arr = malloc(arr_size * sizeof(int));
 	int** pointer = &arr;
-	
-	for (int i = 0; i < line; i++)
+	for (i = 0; i < 17; i++) reg[i] = 0;
+	reg[14] = &arr;
+	reg[15] = *char_array_A;
+
+	printf("  WYKONYWANIE INSTRUKCJI \n\n ");
+	for (i = 0; i < line; i++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (j = 0; j < 20; j++)
 			if (strcmp(key[j], char_array_B[i]) == 0)
 				switch (j)
 				{
@@ -32,7 +36,7 @@ void check_instructions(char **char_array_A, char **char_array_B, char **char_ar
 					LR(reg, char_array_C, char_array_D, i);
 					j = 20;  break;
 				case 5:
-					printf("A:  ");
+					printf("A :  ");
 					dzialanie_arytmetyczne(char_array_A, char_array_C, char_array_D, i, j = 1, reg, arr);
 					j = 20; break;
 				case 6:
@@ -40,7 +44,7 @@ void check_instructions(char **char_array_A, char **char_array_B, char **char_ar
 					dzialanie_arytmetyczne_R(char_array_C, char_array_D, i, j = 1, reg, *arr);
 					j = 20; break;
 				case 7:
-					printf("S:  ");
+					printf("S :  ");
 					dzialanie_arytmetyczne(char_array_A, char_array_C, char_array_D, i, j = 2, reg, *arr);
 					j = 20; break;
 				case 8:
@@ -48,7 +52,7 @@ void check_instructions(char **char_array_A, char **char_array_B, char **char_ar
 					dzialanie_arytmetyczne_R(char_array_C, char_array_D, i, j = 2, reg, *arr);
 					j = 20; break;
 				case 9:
-					printf("M:  ");
+					printf("M :  ");
 					dzialanie_arytmetyczne(char_array_A, char_array_C, char_array_D, i, j = 3, reg, *arr);
 					j = 20; break;
 				case 10:
@@ -56,7 +60,7 @@ void check_instructions(char **char_array_A, char **char_array_B, char **char_ar
 					dzialanie_arytmetyczne_R(char_array_C, char_array_D, i, j = 3, reg, *arr);
 					j = 20; break;
 				case 11:
-					printf("D:  ");
+					printf("D :  ");
 					dzialanie_arytmetyczne(char_array_A, char_array_C, char_array_D, i, j = 4, reg, *arr);
 					j = 20; break;
 				case 12:
@@ -85,8 +89,37 @@ void check_instructions(char **char_array_A, char **char_array_B, char **char_ar
 					ST(reg, char_array_A, char_array_C, char_array_D, i, arr);
 					j = 20; break;
 				}
-		if (ch != 's') ch = getch();
+		if (ch != 's') ch = _getch();
+		if (ch == 'q') break;
 	}
+	printf("KONIEC");
+	_getch();
+	COORD coord;
+	coord.X = 90;
+	coord.Y = 1;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	printf("  TABLICA WARTOSCI\n\n ");
+	for (j = 0; j < arr_size; j++)
+	{
+		coord.Y = j + 3;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+		printf("ARRAY[%d] = %d\n ", j, arr[j]);
+	}
+	coord.X = 50;
+	coord.Y = 1;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	printf("  TABLICA REJESTROW\n\n ");
+	for (j = 0; j < 17; j++)
+	{
+		coord.Y = j + 3;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+		if (j == 14 || j == 15) printf("REGISTER[%d] = %p\n ", j, reg[j]);
+		else printf("REGISTER[%d] = %d\n ", j, reg[j]);
+	}
+	_getch();
+	coord.X = 0;
+	coord.Y = 0;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 	*pointer = NULL;
 	free(arr);
 }
